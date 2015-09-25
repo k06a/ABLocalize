@@ -46,8 +46,9 @@ UIColor *rgb(NSInteger rgb)
 UIColor *rgbs(NSString *rgbs)
 {
     NSScanner *scanner = [NSScanner scannerWithString:rgbs];
-    scanner.scanLocation = [rgbs rangeOfString:@"#"].location + 1;
-    
+    NSUInteger location = [rgbs rangeOfString:@"#"].location;
+    if (location != NSNotFound)
+        scanner.scanLocation = location + 1;
     unsigned rgbValue = 0;
     [scanner scanHexInt:&rgbValue];
     return rgb(rgbValue);
