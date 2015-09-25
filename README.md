@@ -1,85 +1,47 @@
-# ABCollectionViewFRC
-NSFetchedResultsControllerDelegate wrapper for UICollectionView animated changes
+# ABLocalize
+Some localization tricks to support multiple targets
 
 # Usage
 
 Just
-```
-pod 'ABCollectionViewFRC'
-```
-
-and replace this code (MagicalRecord used for example):
 
 ```
-- (NSFetchedResultsController *)frc
+pod 'ABLocalize'
+```
+
+Assign `ABLocalizeTag` one of values from `Build Settings` -> `Preprocessor Macros` like this:
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if (_frc == nil) {
-        _frc = [MenuItem MR_fetchAllSortedBy:@"item_id" ascending:YES withPredicate:
-                [NSPredicate predicateWithFormat:@"section = %@",self.menuSection] groupBy:nil delegate:self];
-    }
-    return _frc;
+    ABLocalizeTag = @[
+#ifdef APP1
+                      @"APP1",
+#elif defined(APP2)
+                      @"APP2",
+#elif defined(APP3)
+                      @"APP3",
+#endif
+    ];
 }
 ```
 
-with this code:
+And you can tag all your localization string you want to depend on target:
 
 ```
-@property (nonatomic, strong) id<NSFetchedResultsControllerDelegate> delegateWrapper;
-
-...
-
-- (id<NSFetchedResultsControllerDelegate>)delegateWrapper
-{
-    if (_delegateWrapper == nil)
-        _delegateWrapper = [[ABCollectionViewFRC alloc] initWithCollectionView:self.collectionView delegate:self];
-    return _delegateWrapper;
-}
-
-- (NSFetchedResultsController *)frc
-{
-    if (_frc == nil) {
-        _frc = [MenuItem MR_fetchAllSortedBy:@"item_id" ascending:YES withPredicate:
-                [NSPredicate predicateWithFormat:@"section = %@",self.menuSection] groupBy:nil delegate:self.delegateWrapper];
-    }
-    return _frc;
-}
+"LOGIN_INVITATION#APP1" = "Welcome to Foo App";
+"LOGIN_INVITATION#APP2" = "Welcome to Bar App";
+"LOGIN_INVITATION#APP3" = "Welcome to Lol App";
 ```
 
-You just need to set delegate `ABCollectionViewFRC` instead of just `self` and you will be able to animate `UICollectionView` changes:
+Even in `de.lproj/Main.strings` for `Main.stroyboard` localization:
 
 ```
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.collectionView deleteItemsAtIndexPaths:@[newIndexPath]];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-            break;
-        case NSFetchedResultsChangeMove:
-            [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-            break;
-        case NSFetchedResultsChangeUpdate:
-            [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-{
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-        default:
-            break;
-    }
-}
+"I3Z-Vv-9QS.text" = "Herzlich Willkommen";
+"I3Z-Vv-9QS.text#APP3" = "¯\_(ツ)_/¯";
 ```
+
+App will try to get tagged version, if not exist - then get common version.
 
 # Contribution
 
