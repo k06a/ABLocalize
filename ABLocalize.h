@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSArray *ABLocalizeTag;
+extern NSString *ABLocalizeTag;
 
 NSString *NSLocalizedStr(NSString *key);
 NSArray *NSLocalizedStringsArray(NSString *key);

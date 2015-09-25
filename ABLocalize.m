@@ -9,7 +9,7 @@
 #import <JRSwizzle/JRSwizzle.h>
 #import "ABLocalize.h"
 
-NSArray *ABLocalizeTag;
+NSString *ABLocalizeTag;
 
 @implementation NSBundle (ABLocalize)
 

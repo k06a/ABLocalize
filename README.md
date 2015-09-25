@@ -14,15 +14,15 @@ Assign `ABLocalizeTag` one of values from `Build Settings` -> `Preprocessor Macr
 ```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    ABLocalizeTag = @[
 #ifdef APP1
-                      @"APP1",
+    ABLocalizeTag = @"APP1";
 #elif defined(APP2)
-                      @"APP2",
+	ABLocalizeTag = @"APP2";
 #elif defined(APP3)
-                      @"APP3",
+	ABLocalizeTag = @"APP3";
 #endif
-    ];
+
+	// …
 }
 ```
 
