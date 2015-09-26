@@ -20,6 +20,8 @@ Assign `ABLocalizeTag` one of values from `Build Settings` -> `Preprocessor Macr
 	ABLocalizeTag = @"APP2";
 #elif defined(APP3)
 	ABLocalizeTag = @"APP3";
+#else
+    #error One of macros APP1, APP2, APP3 should be defined!
 #endif
 
 	// …
