@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ABLocalize"
-  s.version      = "0.0.5"
+  s.version      = "0.0.6"
   s.summary      = "Some localization tricks to support multiple targets"
   s.description  = <<-DESC
                    You can develop several similar apps in one project by dividing them
