@@ -56,7 +56,16 @@ UIColor *rgbs(NSString *rgbs)
 
 NSString *NSLocalizedStr(NSString *key)
 {
-    return NSLocalizedString(key, @"");
+    NSString *str = NSLocalizedString(key, @"");
+    if (![str isEqualToString:key])
+        return str;
+    
+    NSString *basePath = [[NSBundle mainBundle] pathForResource:@"Base" ofType:@"lproj"];
+    NSString *str2 = NSLocalizedStringFromTableInBundle(key, nil, [NSBundle bundleWithPath:basePath], @"");
+    if (![str2 isEqualToString:key])
+        return str2;
+    
+    return @"";
 }
 
 UIColor *NSLocalizedColor(NSString *key)
