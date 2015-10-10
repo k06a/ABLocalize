@@ -24,19 +24,19 @@ NSString *ABLocalizeTag;
     
     NSString *path = [[NSBundle mainBundle] pathForResource:[[NSLocale preferredLanguages].firstObject componentsSeparatedByString:@"-"].firstObject ofType:@"lproj"];
     NSString *ret = [[NSBundle bundleWithPath:path] xxx_localizedStringForKey:taggedKey value:@"" table:table];
-    if (ret.length && ![ret isEqualToString:taggedKey])
+    if (![ret isEqualToString:taggedKey])
         return ret;
     
     ret = [[NSBundle bundleWithPath:path] xxx_localizedStringForKey:key value:@"" table:table];
-    if (ret.length && ![ret isEqualToString:key])
+    if (![ret isEqualToString:key])
         return ret;
     
     ret = [self xxx_localizedStringForKey:taggedKey value:@"" table:table];
-    if (ret.length && ![ret isEqualToString:taggedKey])
+    if (![ret isEqualToString:taggedKey])
         return ret;
     
     ret = [self xxx_localizedStringForKey:key value:@"" table:table];
-    if (ret.length && ![ret isEqualToString:key])
+    if (![ret isEqualToString:key])
         return ret;
     
     return @"";
