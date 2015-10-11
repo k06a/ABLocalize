@@ -20,26 +20,28 @@ NSString *ABLocalizeTag;
 
 - (NSString *)xxx_localizedStringForKey:(NSString *)key value:(NSString *)value table:(NSString *)table
 {
+    static NSString *notFound = @"@#$NOT_FOUND$#@";
     NSString *taggedKey = [key stringByAppendingFormat:@"#%@", ABLocalizeTag];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:[[NSLocale preferredLanguages].firstObject componentsSeparatedByString:@"-"].firstObject ofType:@"lproj"];
-    NSString *ret = [[NSBundle bundleWithPath:path] xxx_localizedStringForKey:taggedKey value:@"" table:table];
-    if (![ret isEqualToString:taggedKey])
+    
+    NSString *ret = [[NSBundle bundleWithPath:path] xxx_localizedStringForKey:taggedKey value:notFound table:table];
+    if (![ret isEqualToString:notFound])
         return ret;
     
-    ret = [[NSBundle bundleWithPath:path] xxx_localizedStringForKey:key value:@"" table:table];
-    if (![ret isEqualToString:key])
+    ret = [self xxx_localizedStringForKey:taggedKey value:notFound table:table];
+    if (![ret isEqualToString:notFound])
         return ret;
     
-    ret = [self xxx_localizedStringForKey:taggedKey value:@"" table:table];
-    if (![ret isEqualToString:taggedKey])
+    ret = [[NSBundle bundleWithPath:path] xxx_localizedStringForKey:key value:notFound table:table];
+    if (![ret isEqualToString:notFound])
         return ret;
     
-    ret = [self xxx_localizedStringForKey:key value:@"" table:table];
-    if (![ret isEqualToString:key])
+    ret = [self xxx_localizedStringForKey:key value:notFound table:table];
+    if (![ret isEqualToString:notFound])
         return ret;
     
-    return @"";
+    return value;
 }
 
 @end
@@ -90,10 +92,9 @@ NSArray *NSLocalizedStringsArray(NSString *key)
     for (NSInteger i = 1; ; i++) {
         NSString *k = [key stringByAppendingFormat:@"_%@",@(i)];
         NSString *str = NSLocalizedStr(k);
-        if (str.length)
-            [arr addObject:str];
-        else
+        if (str.length == 0)
             break;
+        [arr addObject:str];
     }
     return arr;
 }
