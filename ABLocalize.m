@@ -74,9 +74,12 @@ NSString *NSLocalizedStr(NSString *key)
         return str;
     
     NSString *basePath = [[NSBundle mainBundle] pathForResource:@"Base" ofType:@"lproj"];
-    NSString *str2 = NSLocalizedStringFromTableInBundle(key, nil, [NSBundle bundleWithPath:basePath], @"");
-    if (str2.length)
-        return str2;
+    NSString *sb = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIMainStoryboardFile"];
+    for (NSString *table in @[[NSNull null],sb]) {
+        NSString *str2 = NSLocalizedStringFromTableInBundle(key, (table == (id)[NSNull null]) ? nil : table, [NSBundle bundleWithPath:basePath], @"");
+        if (str2.length)
+            return str2;
+    }
     
     return @"";
 }
